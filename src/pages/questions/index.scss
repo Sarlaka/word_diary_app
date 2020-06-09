@@ -1,0 +1,39 @@
+.page_questions {
+  padding: 100px 10%;
+
+  .title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .questions {
+    // width: 80%;
+    height: 400px;
+    padding: 10px 16px;
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .tips{
+    color: #ccc;
+    font-size: 24px;
+  }
+
+  .submitBtn {
+    margin-top: 48px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    background: #4173ff;
+    color: #fff;
+    border-radius: 8px;
+  }
+
+  .userImg {
+    display: block;
+    margin: 0 auto 32px;
+  }
+}

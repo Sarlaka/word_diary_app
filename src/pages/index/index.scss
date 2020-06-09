@@ -1,0 +1,43 @@
+.index {
+  flex-direction: column;
+  width: 100%;
+  padding: 72px 48px 48px;
+  box-sizing: border-box;
+  font-family: "PingFang SC", "Arial", "Microsoft YaHei", "WenQuanYi Micro Hei", "Helvetica", "sans-serif";
+  font-weight: 400;
+  min-height: 100vh;
+  background: #fce7f3;
+  // background: url(https://www.lemonduck.cn/images/3.jpg) no-repeat top / cover;
+
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 68px;
+
+    .title {
+      font-size: 56px;
+      color: #3b3f44;
+    }
+  }
+
+  .course {
+    width: 650px;
+    height: 150px;
+    background: rgba(255,255,255,.9);
+    border-radius: 12px;
+    box-shadow: 0px 4px 22px 0px #f2f2f2;
+    margin: 0 auto 48px;
+    display: flex;
+    align-items: center;
+    padding: 4px 24px 4px 48px;
+    font-size: 40px;
+    box-sizing: border-box;
+  }
+
+  .txt{
+    margin: 0 96px 0 36px;
+  }
+
+}

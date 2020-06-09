@@ -1,0 +1,39 @@
+.page-word-wrapper {
+  width: 100vw;
+  height: 100vh;
+  // background: url(https://www.lemonduck.cn/images/1.jpg) no-repeat center / cover;
+  background: #fce7f3;
+}
+
+.page-word {
+  padding: 12px 24px;
+  box-sizing: border-box;
+  font-family: "PingFang SC", "Arial", "Microsoft YaHei", "WenQuanYi Micro Hei", "Helvetica", "sans-serif";
+  font-weight: 400;
+  min-height: 100vh;
+  background: rgba(255, 255, 255,0);
+
+  .page-word-title {
+    font-size: 36px;
+  }
+
+  .wordList {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px dashed #a0a0a0;
+    height: 114px;
+    box-sizing: border-box;
+  }
+
+  .word {
+    font-size: 30px;
+    margin-bottom: 12px;
+  }
+
+  .translate {
+    font-size: 28px;
+    color: #454545;
+  }
+}

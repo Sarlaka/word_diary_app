@@ -1,0 +1,45 @@
+.page_my {
+  height: 100vh;
+  background: url(https://www.lemonduck.cn/images/4.jpg) no-repeat top / cover;
+  .page_my_inner{
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 72px 48px;
+    background:rgba(255,255,255,.7);
+  }
+  .content {
+    margin-top: 48px;
+  }
+
+  .list {
+    border-bottom: 1px dashed #bbbbbb;
+    height: 90px;
+    display: flex;
+    align-items: center;
+
+    .txt {
+      margin-right: 16px;
+    }
+  }
+}
+
+.authBtn {
+  width: 50%;
+  margin: 48px auto;
+}
+
+.profileBox {
+  display: flex;
+  align-items: center;
+
+  .avatar {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    margin-right: 24px;
+  }
+
+  .username {
+    font-size: 44px;
+  }
+}
