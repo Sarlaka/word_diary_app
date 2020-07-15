@@ -2,7 +2,7 @@
  * @Author: duchengdong
  * @Date: 2020-05-03 10:48:28
  * @LastEditors: duchengdong
- * @LastEditTime: 2020-06-04 22:19:52
+ * @LastEditTime: 2020-06-12 15:09:49
  * @Description: 
  */
 import Taro, { Component } from '@tarojs/taro'
@@ -57,12 +57,9 @@ class App extends Component {
       }],
       custom: false
     },
-    plugins: {
-      "tucao": {
-          "version": "1.1.5",
-          "provider": "wx8abaf00ee8c3202e"
-      }
-    }
+    navigateToMiniProgramAppIdList: [
+      "wx8abaf00ee8c3202e"
+    ]
   }
 
   componentDidMount () {

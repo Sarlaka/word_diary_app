@@ -2,7 +2,7 @@
  * @Author: duchengdong
  * @Date: 2020-05-03 11:36:47
  * @LastEditors: duchengdong
- * @LastEditTime: 2020-06-04 22:20:41
+ * @LastEditTime: 2020-06-12 15:31:23
  * @Description: 
  */
 import Taro, { Component } from '@tarojs/taro'
@@ -43,11 +43,11 @@ export default  class Index extends Component {
       }
     }
     componentDidMount(){
-      this.Tucao = Taro.requirePlugin('tucao').default;
-      this.Tucao.init(void(0), {
-        productId:163852,
-        navigateTo: Taro.navigateTo
-      });
+      // this.Tucao = Taro.requirePlugin('tucao').default;
+      // this.Tucao.init(void(0), {
+      //   productId:163852,
+      //   navigateTo: Taro.navigateTo
+      // });
     
     }
     componentWillReceiveProps (nextProps) {
@@ -137,10 +137,21 @@ export default  class Index extends Component {
               <View className='list' onClick={()=>{
                 var value = Taro.getStorageSync('loginInfo')
                 let loginInfo = JSON.parse(value)
-                this.Tucao.go({
-                  avatar: loginInfo.avatar,
-                  nickname: loginInfo.username,
-                  openid: loginInfo.user_id
+                // this.Tucao.go({
+                //   avatar: loginInfo.avatar,
+                //   nickname: loginInfo.username,
+                //   openid: loginInfo.user_id
+                // })
+                wx.navigateToMiniProgram({
+                  appId:'wx8abaf00ee8c3202e',
+                  extraData:{
+                    id:163852,
+                    customData: {
+                      avatar: loginInfo.avatar,
+                      nickname: loginInfo.username,
+                      openid: loginInfo.user_id
+                    }
+                  }
                 })
             }}>
                 <Text className='txt'>吐个槽</Text>

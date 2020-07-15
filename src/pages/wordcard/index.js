@@ -2,25 +2,20 @@
  * @Author: duchengdong
  * @Date: 2020-05-11 21:46:03
  * @LastEditors: duchengdong
- * @LastEditTime: 2020-06-09 23:36:29
+ * @LastEditTime: 2020-06-14 14:41:20
  * @Description: 
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View,Text,Input,Switch} from '@tarojs/components'
 import { connect } from '@tarojs/redux';
 import { initWordList,updateWordStatus} from '../../actions/counter'
-import { AtIcon,AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
+import {AtProgress, AtIcon,AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
 import yuyinImg from './yuyin.png';
 import liekImg from './like.png';
 import unlikeImg from './unlike.png';
 import API from '../../constants/API'
 import {requestApi} from '../../constants/utils'
 import './index.scss';
-
-// 1: 999
-// 2: 1022
-// 3: 1569
-// 4: 1773
 
 @connect(({
   counter
@@ -52,22 +47,30 @@ export default class WordCard extends Component {
            isAutoPlaying: false,
            duration:2,
            repeat: 1,
-           isOpened: false
+           isOpened: false,
+           processTotal: 1000
         }
     }
     startX=0
     componentWillMount () {
-        console.log(this.$router.params) // 输出 { id: '2', type: 'test' }
-        console.log(this.props.counter)
+        // console.log(this.$router.params) // 输出 { id: '2', type: 'test' }
+        // console.log(this.props.counter)
         const wordId = this.$router.params.wordId
         let current = this.props.counter.wordList.findIndex(v => v.wordId==wordId)
-        console.log(current)
+        // console.log(current)
+        const processData = {
+            1: 999,
+            2: 1022,
+            3: 1569,
+            4: 1773
+        }
         this.setState({
-            current
+            current,
+            processTotal: processData[this.props.counter.wordType]
         })
     }
     componentWillUnmount () {
-        console.log('unmount')
+        // console.log('unmount')
         const {current} = this.state
         let currentWord = this.props.counter.wordList[current]
         Taro.setStorage({
@@ -79,14 +82,14 @@ export default class WordCard extends Component {
     componentDidMount(){
         this.innerAudioContext = Taro.createInnerAudioContext()
         this.innerAudioContext.onError((res) => {
-            console.log(res.errMsg)
-            console.log(res.errCode)
+            // console.log(res.errMsg)
+            // console.log(res.errCode)
         })
         this.innerAudioContext.onPlay =(e) => {
-            console.log('pppppp')
+            // console.log('pppppp')
         }
         this.innerAudioContext.onEnded =(e) => {
-            console.log('llllll')
+            // console.log('llllll')
         }
         Taro.showShareMenu({
             withShareTicket: true
@@ -100,7 +103,7 @@ export default class WordCard extends Component {
     }
 
     componentDidHide () {
-        console.log('hide')
+        // console.log('hide')
     }
     touchStartHandle = (e) => {
         this.innerAudioContext.stop()
@@ -115,7 +118,7 @@ export default class WordCard extends Component {
         const {current} = this.state
         let {counter} = this.props
         let offsetX = e.changedTouches[0].pageX - this.startX
-        console.log(e.changedTouches[0].pageX,this.startX)
+        // console.log(e.changedTouches[0].pageX,this.startX)
         if(Math.abs(offsetX)<40||(offsetX>0&&current==0)||(offsetX<0&&current==counter.wordList.length-1)){
             this.setState({
                 offsetX: 0,
@@ -141,7 +144,7 @@ export default class WordCard extends Component {
     transitionEndHandle=()=>{
         let {current,direction,isStart,requestLock} = this.state
         let {counter} = this.props
-        console.log(isStart,current)
+        // console.log(isStart,current)
         if(isStart=='2'){
             if(direction==0){
                 // 左滑
@@ -187,7 +190,7 @@ export default class WordCard extends Component {
         const {wordType,wordList} = counter
         requestApi(`${API.getWordList}?bookid=${wordType}&size=20&sq=1&wordid=${wordList[wordList.length-1].wordId}`,'get',null).then(res => {
             let newWordList = wordList.concat(res)
-            console.log(newWordList)
+            // console.log(newWordList)
             initWordList(newWordList,wordType)
             this.setState({
                 requestLock: false
@@ -214,6 +217,7 @@ export default class WordCard extends Component {
         const {counter} = this.props
         //销毁自动播放的音乐实例
         this.innerAudioContext1&&this.innerAudioContext1.destroy()
+        this.innerAudioContext2&&this.innerAudioContext2.destroy()
         this.innerAudioContext.src = counter.wordList[current].wordSound
         this.innerAudioContext.play()
     }
@@ -223,6 +227,7 @@ export default class WordCard extends Component {
         const {counter} = this.props
         //销毁自动播放的音乐实例
         this.innerAudioContext1&&this.innerAudioContext1.destroy()
+        this.innerAudioContext2&&this.innerAudioContext2.destroy()
         this.innerAudioContext.src = counter.wordList[current].exampleSound
         this.innerAudioContext.play()
     }
@@ -245,15 +250,17 @@ export default class WordCard extends Component {
     playHandle = () =>{
         const {isAutoPlaying} = this.state
         if(isAutoPlaying){
-            console.log('开始播放')
+            // console.log('开始播放')
             this.autoPlayHandle()
         }else{
-            console.log('停止播放')
+            // console.log('停止播放')
             this.innerAudioContext1&&this.innerAudioContext1.destroy()
+            this.innerAudioContext2&&this.innerAudioContext2.destroy()
             clearTimeout(this.timer)
         }
     }
     innerAudioContext1 = null
+    innerAudioContext2 = null
     timer = null
     autoPlayHandle = () => {
         let {current,requestLock,duration,repeat} = this.state
@@ -265,6 +272,7 @@ export default class WordCard extends Component {
         // 播放单词
         this.innerAudioContext1.onPlay(()=>{
             wordPlayCount--
+            console.log(wordPlayCount,'wordPlayCount')
         })
         this.innerAudioContext1.onEnded((e) => {
             console.log('单词播放结束') 
@@ -274,18 +282,21 @@ export default class WordCard extends Component {
                 }, duration*1000);
                 return
             }   
+            this.innerAudioContext1.destroy()
             // 播放例句
-            this.innerAudioContext1.onPlay(()=>{
+            this.innerAudioContext2 = Taro.createInnerAudioContext()
+            this.innerAudioContext2.onPlay(()=>{
                 examplePlayCount--
+                console.log(examplePlayCount,'examplePlayCount')
             })
-            this.innerAudioContext1.onEnded((e) => {
+            this.innerAudioContext2.onEnded((e) => {
                 if(examplePlayCount>0){
                     this.timer=setTimeout(() => {
-                        this.innerAudioContext1.play()
+                        this.innerAudioContext2.play()
                     }, duration*1000);
                     return
                 } 
-                this.innerAudioContext1.destroy()
+                this.innerAudioContext2.destroy()
                 current = current+1
                 if(!requestLock&&current+5>counter.wordList.length){
                     // 请求新数据
@@ -303,10 +314,10 @@ export default class WordCard extends Component {
                     })
                 }, duration*1000);
             })
-            this.innerAudioContext1.src = currentWord.exampleSound
+            this.innerAudioContext2.src = currentWord.exampleSound
             // 延时后执行
             this.timer=setTimeout(() => {
-                this.innerAudioContext1.play()
+                this.innerAudioContext2.play()
             }, duration*1000);
         })
         this.innerAudioContext1.src = currentWord.wordSound
@@ -324,7 +335,7 @@ export default class WordCard extends Component {
         })
     }
     switchHandle = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         this.setState({
             isAutoPlaying: e.target.value
         },()=>{
@@ -364,13 +375,17 @@ export default class WordCard extends Component {
         })
     }
     render(){
-        const {current,offsetX,isStart,isAutoPlaying,duration,repeat,isOpened} = this.state
+        const {current,offsetX,isStart,isAutoPlaying,duration,repeat,isOpened,processTotal} = this.state
         const {counter} = this.props
+        let percent = Number((counter.wordList[current]?counter.wordList[current].wordId:1)/processTotal*100).toFixed(2)
         return (
             <View className='page-word-card'>
                 <View className='settingsBox' onClick={this.showSetting}>
                     <AtIcon value="settings" color="#a0a0a0"></AtIcon>
                     设置
+                </View>
+                <View className='processBox'>
+                    <AtProgress percent={Number(percent)} color='#f29404' strokeWidth={10}/>
                 </View>
                 <View className="wrapper"
                     onTouchStart={this.touchStartHandle}
@@ -445,7 +460,7 @@ export default class WordCard extends Component {
                 >
                     <AtModalHeader>设置</AtModalHeader>
                     <AtModalContent>
-                        <View className="settingBox">
+                        <View className="settingBox" style={{display:isOpened?'block':'none'}}>
                             <View className="duration">
                                 <View className="label">播放间隔(s)：</View>
                                 <Input className='form-input' type='number' value={duration} onInput={this.durationIpt}/>

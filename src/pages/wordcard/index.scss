@@ -97,7 +97,7 @@
 
   .settingsBox {
     position: fixed;
-    top: 100px;
+    top: 85px;
     right: 75px;
     color: #a0a0a0;
     display: flex;
@@ -129,5 +129,12 @@
     border: 1px solid #555;
     border-radius: 6px;
     padding: 0 12px;
+  }
+
+  .processBox{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
   }
 }

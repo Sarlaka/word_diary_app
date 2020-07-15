@@ -2,7 +2,7 @@
  * @Author: duchengdong
  * @Date: 2020-05-03 11:36:47
  * @LastEditors: duchengdong
- * @LastEditTime: 2020-06-04 21:55:40
+ * @LastEditTime: 2020-06-10 23:39:36
  * @Description: 
  */
 import Taro, { Component } from '@tarojs/taro'
@@ -78,7 +78,8 @@ export default  class Index extends Component {
             wordList: this.props.counter.wordList,
             windowHeight,
             windowWidth,
-            recordWordId
+            recordWordId,
+            isRequest: false
           })
         }
     }
@@ -142,6 +143,8 @@ export default  class Index extends Component {
 
     scrollHandle = (e)=> {
       const {windowHeight,isRequest,type,wordList,windowWidth,offset} = this.state
+      console.log(e.target.scrollHeight-e.target.scrollTop-windowHeight)
+      console.log(isRequest)
       if(e.target.scrollHeight-e.target.scrollTop-windowHeight<100&&!isRequest){
         console.log('向下加载数据')
         this.setState({
